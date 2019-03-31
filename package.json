@@ -1,0 +1,22 @@
+{
+  "name": "acms",
+  "version": "1.0.0",
+  "description": "acms locker project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.18.3",
+    "coupon-code": "^0.4.5",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.7",
+    "node-geocoder": "^3.22.0",
+    "nodemon": "^1.18.9",
+    "voucher-code-generator": "^1.1.1"
+  }
+}

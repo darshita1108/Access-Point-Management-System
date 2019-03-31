@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+body,h1 {
+  font-family: "Raleway", sans-serif
+}
+body{
+  background-color:black;
+
+}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('/static/abc.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+</style>
+
+<body >
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+  <br>
+
+<% items.forEach(function (item) { %>
+<form method="post">
+ <div class="container">
+  <div class="card">
+    <div class="card-body" style="color:black">
+    item_id:<%= item.item_id %><br>
+    price:<%= item.price %></br>
+    length:<p id="l"><%= item.length %></p>
+    breadth:<p id="b"><%= item.breadth %></p>
+    height:<p id="h"><%= item.height %></p>
+    category:<%= item.category %><br>
+      <button type="submit" onclick="myfunc()">Buy item</button>
+    </div>
+  </div>
+ </div>
+  <br><br>
+</form>
+<% }) %>
+
+</div>
+
+</body>
+<script>
+  function myfunc()
+  { 
+    var l=document.getElementById("l").textContent;
+    var b=document.getElementById("b").textContent;
+    var h=document.getElementById("h").textContent;
+    alert(l*b*h);
+    if(l*b*h<100)
+      alert("cannot use locker");
+    else
+      alert("locker is available");
+  }
+</script>
+</html>
+
+</body>
+</html>
