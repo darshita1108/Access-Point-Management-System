@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+<style>
+body,h1 {
+  font-family: "Raleway", sans-serif
+}
+body{
+  background-color:black;
+
+}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('/static/abc.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+</style>
+
+<body >
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+ 
+  <div class="w3-display-middle">
+  	 <h2>Welcome <%=email%></h2>
+  	 <h3>Your item is:</h3>
+  	 <h4>Category :<em><%=category%></em></h4>
+  	 <h4>Price :<em><%=price%></em></h4>
+     <h4 >length :<p id="l"><%=length%></p></h4>
+     <h4>breadth :<p id="b"><%=breadth%></p></h4>
+     <h4 >height :<p id="h"><%=height%></p></h4>
+
+  	 <h2>Delivery options:</h2>
+  	<form>
+       <select name="delivery" id="delivery">
+       <option value="locker">Locker</option>
+       <option value="Cod">Cash on delivery</option>
+       </select>
+  <br><br>
+  <button onclick="myfunc()">Select</button>>
+</form>
+  </div>
+</body>
+<script  type="text/javascript">
+	function myfunc()
+	{
+      var l=document.getElementById("l").textContent;
+      var b=document.getElementById("b").textContent;
+      var h=document.getElementById("h").textContent;
+      var x = document.getElementById("delivery").value;
+      var flag=0;
+      if(l<10||b<10||h<10)
+      	flag=1;
+      if(flag==1&&x=='locker')
+      	alert("item is not fit for locker");
+    
+	}
+</script>
+</html>

@@ -13,7 +13,12 @@ app.set('view engine', 'ejs')
 app.get('/coupon',function(req,res){
 	res.render('coupon');
 });
-
+app.get('/',function(req,res){
+  res.render('home');
+});
+app.get('/admin',function(req,res){
+  res.render('admin');
+});
 app.get('/adduser',function(req,res){
   res.render('user');
 });
@@ -22,8 +27,20 @@ app.get('/addlocker',function(req,res){
   res.render('locker');
 });
 
+app.get('/orderstatus',function(req,res){
+  res.render('orderstatus');
+});
+app.get('/findusers',function(req,res){
+  res.render('findusers');
+});
 app.get('/additem',function(req,res){
   res.render('item');
+});
+app.get('/generate',function(req,res){
+  res.render('generate');
+});
+app.get('/order',function(req,res){
+  res.render('order');
 });
 
 app.listen(3003,function(){
@@ -45,7 +62,7 @@ var userSchema=new mongoose.Schema({
   email:String,
   phone:Number,
   address:String,
-  //unattended_deliveries:Number,
+  unattended_deliveries:Number,
   gender:String,
 
 });
@@ -55,69 +72,6 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 //userSchema.createIndex({id:1},{unique:true});
 var users=mongoose.model('users',userSchema);
-
- app.use(bodyParser.urlencoded({extended : true}));
-   app.post("/adduser", function(request, response) {
-       console.log(request.body); 
-       var newusers={
-       name:{first:request.body.firstname,last:request.body.lastname},
-       email:request.body.email,
-       phone:request.body.phone,
-       address:request.body.address,
-       //unattended_deliveries:3,
-       gender:request.body.gender
-    }
- users.findOne({
-      email:request.body.email
-    }).then(user=>{
-      if(user)
-      {
-        //return user
-        //console.log('user exists');
-        //response.send('user exists');
-      }
-      else{
-        //create user
-       new users(newusers)
-        .save()
-        .then(console.log('saved'));
-        //response.send('done');
-      }
-    });
-    response.render('order');
- });
-   /**
-app.post('/adduser',function(req,res){
-  //console.log('hey');
-  var newusers={
-       name:{first:req.body.firstname,last:req.body.lastname},
-       email:req.body.email,
-       phone:req.body.email,
-       address:req.body.address,
-       //unattended_deliveries:3,
-       gender:req.body.gender
-    }
- users.findOne({
-      email:req.body.email
-    }).then(user=>{
-      if(user)
-      {
-        //return user
-        console.log('user exists');
-        res.send('user exists');
-      }
-      else{
-        //create user
-       new User(newUser)
-        .save()
-        .then(user=>done(null,user));
-      }
-    });
-  
-});
-**/
-//userSchema.index({name: 1}, { unique: true });
-//userSchema.Index( {_id:1}, { unique: true } )
 /**
 var item1=users({
   id:1,
@@ -134,37 +88,7 @@ var item1=users({
 	console.log('item1 saved');
 });
 
-var item2=users({
-  id:2,
- name:{first:'Ria',last:'Bhat'},
- email:'riashriyabhat1998@gmail.com',
- phone:8890346789,
- address:'H.no 123,sector-12',
- unattended_deliveries:1,
- gender:'female'
- 
-}).save(function(err){
-	if(err)
-		throw err;
-	console.log('item2 saved');
-});
 
-var item3=users({
-  id:3,
- name:{first:'Pooja',last:'Sethi'},
- email:'pooja1998@gmail.com',
- phone:8599589999,
- address:'H.no 789,sector-12',
- unattended_deliveries:3,
- gender:'female'
- 
-}).save(function(err){
-	if(err)
-		throw err;
-	console.log('item3 saved');
-});
-
-**/
 //schema of lockerrrrrrrrrrs
 var lockerSchema=new mongoose.Schema({
  locker_id:Number,
@@ -229,7 +153,7 @@ var items=mongoose.model('items',itemSchema);
 
 app.use(bodyParser.urlencoded({extended : true}));
    app.post("/additem", function(request, response) {
-       console.log(request.body); 
+       //console.log(request.body); 
        var newitem={
        item_id:request.body.item_id,
        length:request.body.length,
@@ -258,16 +182,145 @@ app.use(bodyParser.urlencoded({extended : true}));
     
  });
 
-app.get('/order',  function(req, res) {
-    // mongoose operations are asynchronous, so you need to wait 
-    items.find({}, function(err, data) {
+app.use(bodyParser.urlencoded({extended : true}));
+   app.post("/order", function(request, response) {
+       console.log(request.body); 
+       var newusers={
+       name:{first:request.body.firstname,last:request.body.lastname},
+       email:request.body.email,
+       phone:request.body.phone,
+       address:request.body.address,
+       unattended_deliveries:0,
+       gender:request.body.gender
+    }
+ users.findOne({
+      email:request.body.email
+    }).then(user=>{
+      if(user)
+      {
+        //return user
+        //console.log('user exists');
+        //response.send('user exists');
+      }
+      else{
+        //create user
+       new users(newusers)
+        .save()
+        .then(console.log('saved'));
+        //response.send('done');
+      }
+    });
+        items.find({}, function(err, data) {
         // note that data is an array of objects, not a single object!
-        res.render('order.ejs', {
-            user : req.user,
+        response.render('order.ejs', {
+            email : request.body.email,
+            fname:request.body.firstname,
+            lname:request.body.lastname,
             items: data
         });
     });
+      });
+  
+var orderSchema=new mongoose.Schema({
+ order_id:Number,
+ email:String,
+ status:String
 });
+
+//lockerSchema.index({id:1},{unique:true});
+
+var orders=mongoose.model('orders',orderSchema);
+
+app.post("/buy", function(request, response) {
+       console.log(request.body); 
+       var r='ordered';
+       var neworders={
+       order_id:request.body.id,
+       email:request.body.email,
+       status:r
+    }
+      orders.findOne({
+      email:request.body.email,
+      order_id:request.body.id
+    }).then(order=>{
+      if(order)
+      {
+      }
+      else{
+       new orders(neworders)
+        .save()
+        .then(console.log('saved'));
+        }
+    });
+        items.find({}, function(err, data) {
+        // note that data is an array of objects, not a single object!
+        response.render('buy.ejs', {
+            email : request.body.email,
+            id:request.body.id,
+            length:request.body.length,
+            breadth:request.body.breadth,
+            height:request.body.height,
+            category:request.body.category,
+            price:request.body.price
+        });
+    });
+  });
+
+app.post("/orderstatus", function(request, response) {
+       console.log(request.body); 
+      orders.findOne({
+      order_id:request.body.id
+    }).then(order=>{
+      if(order)
+      {
+        console.log(order);
+        console.log(order);
+        var myquery = { order_id: request.body.id };
+        var newvalues = { $set: {status: request.body.status } };
+        orders.updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
+  });
+      }
+    });
+    users.findOne({
+      email:request.body.email
+    }).then(user=>{
+      if(user)
+      {
+        console.log(user);
+        var myquery = { email: request.body.email };
+        var newvalues = { $inc: {unattended_deliveries:1 } };
+        if(request.body.status=='unattended'){
+        users.updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
+  });}
+      }
+    });
+    response.send("updated");
+  });
+
+app.post("/generate", function(request, response) {
+    //console.log(request.body.threshold);
+      var threshold=request.body.threshold;
+      var query = { unattended_deliveries: { $gt: threshold }  };
+      users.find(query,function(err, result) {
+      if (err) throw err;
+     console.log(result);
+     response.render('generate.ejs',{
+      result:result
+     });
+  });
+  });
+  /** app.post('/buy', function(request, response) {
+    var length=request.body.length;
+    console.log(length);
+     response.render('buy.ejs', {
+            length:request.body.length
+        });
+     
+});**/
 //query on users with unattended deliveries greater than 2
 /**
 users.find().exec(function(err,result){
@@ -324,18 +377,71 @@ var generateUniqueCode = Promise.method(function() {
     });
 });
 
+var couponSchema=new mongoose.Schema({
+ code:String,
+ user_email:String
+});
+
+var coupons=mongoose.model('coupons',couponSchema);
+
 app.post('/coupon', function (req, res) {
   console.log('Moved to add page');
-   //move to add page
+   var c=req.body.coupon;
+  for(var i=0;i<c;i++)
+  {
   generateUniqueCode().then(function(code) {
-    console.log(code);
-    res.send(code);
+  new coupons({
+    code:code,
+    user_email:"not added"
+  }).save()
+  .then(console.log('saved'));
+     });
+  }
+  res.send("done");
 });
-  //res.send(code);
+
+var nodemailer=require('nodemailer');
+var transporter=nodemailer.createTransport({
+service:'gmail',
+auth:{
+  user:'aggarwaldarshita@gmail.com',
+  pass:''
+}
 });
 
+app.post('/created', function (req, res) {
+  console.log('Moved to add page');
+    coupons.findOne({
+      user_email:req.body.email
+    }).then(coupon=>{
+      if(coupon)
+      {
+      }
+    else{
+  generateUniqueCode().then(function(code) {
+  new coupons({
+    code:code,
+    user_email:req.body.email
+  }).save()
+  .then(console.log('saved'));
+  console.log("hey");
+   var mailOptions={
+    from:'aggarwaldarshita@gmail.com',
+    to:req.body.email,
+    subject:'sending email',
+    html: '<p>Your code is</p>'+code
+   };
+   transporter.sendMail(mailOptions,function(err,info){
+       if(err){
+        console.log(err);
+       }
+       else{
+        console.log('email sent'+info.response);
 
-
-generateUniqueCode().then(function(code) {
-    console.log(code);
+       }
+   });
+     });
+        }
+      });
+  res.render("created.ejs");
 });

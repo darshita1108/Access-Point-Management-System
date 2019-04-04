@@ -25,47 +25,59 @@ body, html {height: 100%}
   background-size: cover;
 }
 </style>
-
+<script>var c=0;</script>
 <body >
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
   <br>
-
-<% items.forEach(function (item) { %>
-<form method="post">
+<h2 align="center">Welcome <%= fname %> <%= lname%></h2><br>
+<h3 align="center">Your email is <%=email%></h3>
+<div class="container">
+  <div class="card">
+<% for(var i=0;i<items.length;i++){%>
+<form method="post" action="http://localhost:3003/buy" >
  <div class="container">
   <div class="card">
-    <div class="card-body" style="color:black">
-    item_id:<%= item.item_id %><br>
-    price:<%= item.price %></br>
-    length:<p id="l"><%= item.length %></p>
-    breadth:<p id="b"><%= item.breadth %></p>
-    height:<p id="h"><%= item.height %></p>
-    category:<%= item.category %><br>
-      <button type="submit" onclick="myfunc()">Buy item</button>
+    Email:
+    <input type="text" name="email"  value="<%=email%>" disabled>
+      <br>
+    <input type="hidden" name="email"  value="<%=email%>">
+      ID:
+      <input type="number" name="id" disabled="disabled" value="<%=items[i].item_id%>">
+      <br>
+      <input type="hidden" name="id"  value="<%=items[i].item_id%>">
+      Price:
+      <input type="number" name="price" disabled="disabled" value="<%=items[i].price%>">
+      <br>
+      <input type="hidden" name="price"  value="<%=items[i].price%>">
+      Length:
+      <input type="number" name="length" disabled="disabled" value="<%=items[i].length%>">
+      <br>
+      <input type="hidden" name="length"  value="<%=items[i].length%>">
+      Breadth:
+      <input type="number" name="breadth" disabled="disabled" value="<%=items[i].breadth%>">
+      <br>
+      <input type="hidden" name="breadth" value="<%=items[i].breadth%>">
+      Height:
+      <input type="number" name="height" disabled="disabled" value="<%=items[i].height%>">
+      <br>
+      <input type="hidden" name="height"  value="<%=items[i].height%>">
+      Category:
+      <input type="text" name="category" disabled="disabled" value="<%=items[i].category%>">
+      <input type="hidden" name="category"  value="<%=items[i].category%>">
+      <br>
+      <button type="submit">Buy item</button>
     </div>
   </div>
  </div>
   <br><br>
 </form>
-<% }) %>
+<% } %>
 
 </div>
-
 </body>
-<script>
-  function myfunc()
-  { 
-    var l=document.getElementById("l").textContent;
-    var b=document.getElementById("b").textContent;
-    var h=document.getElementById("h").textContent;
-    alert(l*b*h);
-    if(l*b*h<100)
-      alert("cannot use locker");
-    else
-      alert("locker is available");
-  }
-</script>
+
 </html>
 
 </body>
 </html>
+
