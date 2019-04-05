@@ -50,8 +50,9 @@ app.get('/order',function(req,res){
   res.render('order');
 });
 
-app.listen(3003,function(){
-	console.log('listening to port 3003');
+const port = process.env.PORT || 3003;
+app.listen(port,()=>{
+  console.log('server started on port ${port}');
 });
 //var voucher_codes = require('voucher-code-generator');
 
