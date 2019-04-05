@@ -17,8 +17,11 @@ app.get('/coupon',function(req,res){
 app.get('/user',function(req,res){
   res.render('user');
 });
-app.get('/',function(req,res){
+app.get('/home',function(req,res){
   res.render('home');
+});
+app.get('/',function(req,res){
+ res.render('first');
 });
 app.get('/admin',function(req,res){
   res.render('admin');

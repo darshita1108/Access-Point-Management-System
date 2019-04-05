@@ -36,7 +36,7 @@ body {font-family: "Open Sans"}
        <h4 class="w3-text-white">height :<p id="h"><%=height%></p></h4>
       </h1>
       <h1 class="w3-jumbo w3-text-white w3-hide-small"><b>Delivery Options</b></h1>
-      <form method="post" action="http://localhost:3003/nearby">
+      <form method="post" action="/nearby">
        <select name="delivery" id="delivery">
        <option value="locker">Locker</option>
        <option value="Cod">Cash on delivery</option>
@@ -69,9 +69,7 @@ body {font-family: "Open Sans"}
       if(flag==1&&x=='locker')
       {
         alert("item is not fit for locker");
-        alert(document.getElementById("islocker").value);
         document.getElementById("islocker").value='1';
-        alert(document.getElementById("islocker").value);
       }
     
   }
