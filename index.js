@@ -13,6 +13,10 @@ app.set('view engine', 'ejs')
 app.get('/coupon',function(req,res){
 	res.render('coupon');
 });
+
+app.get('/user',function(req,res){
+  res.render('user');
+});
 app.get('/',function(req,res){
   res.render('home');
 });
@@ -49,7 +53,8 @@ app.listen(3003,function(){
 //var voucher_codes = require('voucher-code-generator');
 
 //connect to database
-mongoose.connect('mongodb://user1:user123@ds217125.mlab.com:17125/acms');
+const keys=require('./config/keys');
+mongoose.connect(keys.mongoURI);
 
 //create a schema or a blueprint
 //schema of users
@@ -89,57 +94,105 @@ var item1=users({
 });
 
 
-//schema of lockerrrrrrrrrrs
+//schema of lockerrrrrrrrrrs/
+**/
 var lockerSchema=new mongoose.Schema({
  locker_id:Number,
  length:Number,
  breadth:Number,
  height:Number,
- address:String
+ address:String,
+ latitude:Number,
+ longitude:Number
 });
-
-//lockerSchema.index({id:1},{unique:true});
 
 var lockers=mongoose.model('lockers',lockerSchema);
+var NodeGeocoder = require('node-geocoder');
 
-/**var locker1=lockers({
- locker_id:1,
-}).save(function(err){
-	if(err)
-		throw err;
-	console.log('locker1 saved');
-});
-**/
+var options = {
+  provider: 'google',
+  httpAdapter: 'https', // Default
+  apiKey: keys.key, // for Mapquest, OpenCage, Google Premier
+  formatter: null    
+};
+
+var geocoder=NodeGeocoder(options);
+
+
 app.use(bodyParser.urlencoded({extended : true}));
    app.post("/addlocker", function(request, response) {
        console.log(request.body); 
-       var newlocker={
+  lockers.findOne({
+      locker_id:request.body.locker_id,
+    }).then(locker=>{
+      if(locker)
+      {
+        response.send('locker exists');
+      }
+      else{
+        //create user
+        geocoder.geocode(request.body.address)
+      .then(function(res) {
+       console.log(res);
+       console.log(res[0].latitude);
+       var latitude=res[0].latitude;
+       var longitude=res[0].longitude;
+       new lockers({
        locker_id:request.body.locker_id,
        length:request.body.length,
        breadth:request.body.breadth,
        height:request.body.height,
        address:request.body.address,
-    }
- lockers.findOne({
-      locker_id:request.body.locker_id
-    }).then(locker=>{
-      if(locker)
-      {
-        //return user
-        //console.log('user exists');
-        response.send('locker exists');
-      }
-      else{
-        //create user
-       new lockers(newlocker)
+       latitude:latitude,
+       longitude:longitude
+        })
         .save()
         .then(console.log('saved'));
+        console.log("running");
+       })
+       .catch(function(err) {
+    console.log(err);
+      });
+   
         response.send('done');
       }
     });
     
  });
+var rad = function(x) {
+  return x * Math.PI / 180;
+};
+ var getDistance = function(p1lat, p1lng, p2lat, p2lng) {
+   var R = 6378137; 
+  var dLat = rad(p2lat - p1lat);
+  var dLong = rad(p2lng - p1lng);
+  // console.log(dLat);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(rad(p1lat)) * Math.cos(rad(p2lat)) *
+    Math.sin(dLong / 2) * Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  d = d/1000;
+  return d;
+};
+app.post("/find",function(req,response){
+console.log(req.body.address);
+var lat1=req.body.latitude;
+var long1=req.body.longitude;
 
+geocoder.geocode(req.body.address)
+      .then(function(res) {
+       console.log(res);
+       console.log(res[0].latitude);
+       var lat2=res[0].latitude;
+       var long2=res[0].longitude;
+       var r=getDistance(lat1,long1,lat2,long2);
+       response.send('The distance is '+r);
+       })
+       .catch(function(err) {
+    console.log(err);
+      });
+});
 var itemSchema=new mongoose.Schema({
  item_id:Number,
  length:Number,
@@ -181,7 +234,33 @@ app.use(bodyParser.urlencoded({extended : true}));
     });
     
  });
-
+app.post("/nearby", function(request, response) {
+       var m=request.body.islocker;
+       var address=request.body.address;
+       var delivery=request.body.delivery;
+       lockers.findOne(function(err, data) {
+        var latitude=data.latitude;
+        console.log(latitude);
+       });
+       if(delivery=='locker')
+       {
+       if(m==0)
+       {
+         lockers.find({}, function(err, data) {
+        response.render('nearby.ejs', {
+            address : address,
+            items: data
+        });
+    });
+       }
+       else{
+            response.send("choose another option,not fit for locker");
+       }
+      }
+      else{
+        response.send("Welcome!!");
+      }
+ });
 app.use(bodyParser.urlencoded({extended : true}));
    app.post("/order", function(request, response) {
        console.log(request.body); 
@@ -253,7 +332,6 @@ app.post("/buy", function(request, response) {
         }
     });
         items.find({}, function(err, data) {
-        // note that data is an array of objects, not a single object!
         response.render('buy.ejs', {
             email : request.body.email,
             id:request.body.id,
@@ -405,7 +483,7 @@ var transporter=nodemailer.createTransport({
 service:'gmail',
 auth:{
   user:'aggarwaldarshita@gmail.com',
-  pass:''
+  pass:keys.password
 }
 });
 

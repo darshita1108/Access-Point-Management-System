@@ -1,64 +1,82 @@
 <!DOCTYPE html>
 <html>
-<title></title>
+<title>W3.CSS Template</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
 <style>
-body,h1 {
-  font-family: "Raleway", sans-serif
-}
-body{
-  background-color:black;
-
-}
-body, html {height: 100%}
-.bgimg {
-  background-image: url('/static/abc.jpg');
-  min-height: 100%;
-  background-position: center;
-  background-size: cover;
-}
+h1,h2,h3,h4,h5,h6 {font-family: "Oswald"}
+body {font-family: "Open Sans"}
 </style>
+<body class="w3-light-grey">
 
-<body >
-<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
- 
-  <div class="w3-display-middle">
-  	 <h2>Welcome <%=email%></h2>
-  	 <h3>Your item is:</h3>
-  	 <h4>Category :<em><%=category%></em></h4>
-  	 <h4>Price :<em><%=price%></em></h4>
-     <h4 >length :<p id="l"><%=length%></p></h4>
-     <h4>breadth :<p id="b"><%=breadth%></p></h4>
-     <h4 >height :<p id="h"><%=height%></p></h4>
+<div class="w3-content" style="max-width:1600px">
 
-  	 <h2>Delivery options:</h2>
-  	<form>
+  <!-- Header -->
+  <header class="w3-container w3-center w3-padding-48 w3-white">
+    <h1 class="w3-xxxlarge"><h2>Welcome <%=email%></h2></h1>
+    <h6>Welcome to  <span class="w3-tag">Amazon</span></h6>
+  </header>
+
+  <!-- Image header -->
+  <header class="w3-display-container w3-wide" id="home">
+    <img class="w3-image" src="/static/abc.jpg" alt="Fashion Blog" width="1600" height="1060">
+    <div class="w3-display-left w3-padding-large">
+      <h1 class="w3-text-white">
+        Your item is:<br>
+        <h4 class="w3-text-white">Category :<em><%=category%></em></h4>
+        <h4 class="w3-text-white">Price :<em><%=price%></em></h4>
+        <h4 class="w3-text-white">length :<p id="l"><%=length%></p></h4>
+        <h4 class="w3-text-white">breadth :<p id="b"><%=breadth%></p></h4>
+       <h4 class="w3-text-white">height :<p id="h"><%=height%></p></h4>
+      </h1>
+      <h1 class="w3-jumbo w3-text-white w3-hide-small"><b>Delivery Options</b></h1>
+      <form method="post" action="http://localhost:3003/nearby">
        <select name="delivery" id="delivery">
        <option value="locker">Locker</option>
        <option value="Cod">Cash on delivery</option>
        </select>
+       <br>
+       <h4 class="w3-text-white">Give location of delivery:</h4><br>
+       <input type="text" name="address">
+       <input type="hidden" name="islocker" id="islocker" value="0">
+       <input type="hidden" id="latitude" name="latitude">
+       <input type="hidden" id="longitude" name="longitude">
   <br><br>
-  <button onclick="myfunc()">Select</button>>
+  <button onclick="myfunc()">Select</button>
 </form>
-  </div>
+    </div>
+  </header>
+</div>
 </body>
 <script  type="text/javascript">
-	function myfunc()
-	{
+  function myfunc()
+  {
+
       var l=document.getElementById("l").textContent;
       var b=document.getElementById("b").textContent;
       var h=document.getElementById("h").textContent;
       var x = document.getElementById("delivery").value;
       var flag=0;
       if(l<10||b<10||h<10)
-      	flag=1;
-      if(flag==1&&x=='locker')
-      	alert("item is not fit for locker");
+        flag=1;
     
-	}
+      if(flag==1&&x=='locker')
+      {
+        alert("item is not fit for locker");
+        alert(document.getElementById("islocker").value);
+        document.getElementById("islocker").value='1';
+        alert(document.getElementById("islocker").value);
+      }
+    
+  }
+
+
+
 </script>
 </html>

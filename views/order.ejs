@@ -1,83 +1,87 @@
 <!DOCTYPE html>
 <html>
-<title></title>
+<title>W3.CSS Template</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body,h1 {
-  font-family: "Raleway", sans-serif
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+input{
+  background-color: #3CBC8D;
+  color: white;
 }
-body{
-  background-color:black;
 
-}
-body, html {height: 100%}
-.bgimg {
-  background-image: url('/static/abc.jpg');
-  min-height: 100%;
-  background-position: center;
-  background-size: cover;
+input {
+  size: 4,
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 10px;
 }
 </style>
-<script>var c=0;</script>
-<body >
-<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-  <br>
-<h2 align="center">Welcome <%= fname %> <%= lname%></h2><br>
-<h3 align="center">Your email is <%=email%></h3>
-<div class="container">
-  <div class="card">
+<body  style="max-width:1600px;background-color:black">
+
+<!-- Sidebar/menu -->
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<div class="w3-main" >
+
+  <!-- Header -->
+  <header id="portfolio">
+    <div class="w3-container">
+    <h1 style="color: white"><b>ITEMS</b></h1>
+    </div>
+  </header>
+ 
+  <div class="w3-row-padding">
+    
 <% for(var i=0;i<items.length;i++){%>
 <form method="post" action="http://localhost:3003/buy" >
- <div class="container">
-  <div class="card">
-    Email:
-    <input type="text" name="email"  value="<%=email%>" disabled>
-      <br>
+
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="/static/fashion.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+  
     <input type="hidden" name="email"  value="<%=email%>">
-      ID:
-      <input type="number" name="id" disabled="disabled" value="<%=items[i].item_id%>">
-      <br>
       <input type="hidden" name="id"  value="<%=items[i].item_id%>">
-      Price:
+     <br>
+       Price  &nbsp &nbsp :
       <input type="number" name="price" disabled="disabled" value="<%=items[i].price%>">
-      <br>
       <input type="hidden" name="price"  value="<%=items[i].price%>">
-      Length:
-      <input type="number" name="length" disabled="disabled" value="<%=items[i].length%>">
       <br>
+      Length &nbsp:
+      <input type="number" name="length" disabled="disabled" value="<%=items[i].length%>">
       <input type="hidden" name="length"  value="<%=items[i].length%>">
+      <br>
       Breadth:
       <input type="number" name="breadth" disabled="disabled" value="<%=items[i].breadth%>">
-      <br>
       <input type="hidden" name="breadth" value="<%=items[i].breadth%>">
-      Height:
-      <input type="number" name="height" disabled="disabled" value="<%=items[i].height%>">
       <br>
+      Height &nbsp:
+      <input type="number" name="height" disabled="disabled" value="<%=items[i].height%>">
       <input type="hidden" name="height"  value="<%=items[i].height%>">
-      Category:
+      <br>
+      Type:&nbsp &nbsp &nbsp
       <input type="text" name="category" disabled="disabled" value="<%=items[i].category%>">
       <input type="hidden" name="category"  value="<%=items[i].category%>">
-      <br>
+      <br><br>
       <button type="submit">Buy item</button>
+      </div>
     </div>
-  </div>
- </div>
-  <br><br>
+
 </form>
 <% } %>
+    </div>
+    </div>
+    </div>
+  </div>
+  
+ 
 
-</div>
-</body>
-
-</html>
-
-</body>
-</html>
 

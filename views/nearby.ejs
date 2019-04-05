@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+input{
+  background-color: #3CBC8D;
+  color: white;
+}
+
+input {
+  size: 8
+  width:20px,
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 10px;
+}
+</style>
+<body  style="max-width:1600px;background-color:black">
+
+<!-- Sidebar/menu -->
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<div class="w3-main" >
+
+  <!-- Header -->
+  <header id="portfolio">
+    <div class="w3-container">
+    <h1 style="color: white"><b>LOCKERS</b></h1>
+    </div>
+  </header>
+ 
+  <div class="w3-row-padding">
+    
+<% for(var i=0;i<items.length;i++){%>
+<form method="post" action="http://localhost:3003/find" >
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="/static/lock.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+    <input type="hidden" name="address"  value="<%=address%>">
+      Locker id :<br>
+      <input type="number" name="id" disabled="disabled" value="<%=items[i].locker_id%>"><br>
+      Address :&nbsp &nbsp<br>
+      <input type="string" name="laddress" disabled="disabled" value="<%=items[i].address%>"><br>
+      Latitude:&nbsp &nbsp<br>
+      <input type="number" name="latitude" disabled="disabled" value="<%=items[i].latitude%>">
+      <input type="hidden" name="latitude"  value="<%=items[i].latitude%>"><br>
+       Longitude:<br>
+      <input type="number" name="longitude" disabled="disabled" value="<%=items[i].longitude%>">
+      <input type="hidden" name="longitude"  value="<%=items[i].longitude%>">
+      <br>
+      <button type="submit" style="text-align: center;">Find distance</button>
+      </div>
+    </div>
+
+</form>
+<% } %>
+    </div>
+    </div>
+    </div>
+  </div>
