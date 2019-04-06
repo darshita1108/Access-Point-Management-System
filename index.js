@@ -100,6 +100,11 @@ var item1=users({
 
 //schema of lockerrrrrrrrrrs/
 **/
+app.post('/created',function(req,res){
+res.render('created.ejs',{
+r:'Done!!'
+});
+})
 var lockerSchema=new mongoose.Schema({
  locker_id:Number,
  length:Number,
@@ -125,16 +130,21 @@ var geocoder=NodeGeocoder(options);
 
 app.use(bodyParser.urlencoded({extended : true}));
    app.post("/addlocker", function(request, response) {
+
+    var r='Already exists!!';
        console.log(request.body); 
   lockers.findOne({
       locker_id:request.body.locker_id,
     }).then(locker=>{
       if(locker)
       {
-        response.send('locker exists');
+
+      
       }
       else{
         //create user
+        r='Done!!';
+
         geocoder.geocode(request.body.address)
       .then(function(res) {
        console.log(res);
@@ -157,11 +167,11 @@ app.use(bodyParser.urlencoded({extended : true}));
        .catch(function(err) {
     console.log(err);
       });
-   
-        response.send('done');
       }
     });
-    
+     response.render('created.ejs',{
+          r:r
+        });
  });
 var rad = function(x) {
   return x * Math.PI / 180;
@@ -209,6 +219,7 @@ var itemSchema=new mongoose.Schema({
 var items=mongoose.model('items',itemSchema);
 
 app.use(bodyParser.urlencoded({extended : true}));
+var r='Already exists!!'
    app.post("/additem", function(request, response) {
        //console.log(request.body); 
        var newitem={
@@ -233,10 +244,12 @@ app.use(bodyParser.urlencoded({extended : true}));
        new items(newitem)
         .save()
         .then(console.log('saved'));
-        response.send('done');
+        r='Done!!';
       }
     });
-    
+    response.render('created.ejs',{
+      r:r
+    });
  });
 app.post("/nearby", function(request, response) {
        var m=request.body.islocker;
@@ -258,11 +271,15 @@ app.post("/nearby", function(request, response) {
     });
        }
        else{
-            response.send("choose another option,not fit for locker");
-       }
+            response.render('created.ejs',{
+              r:'Not fit for locker!'
+       });
       }
+    }
       else{
-        response.send("Welcome!!");
+        response.render('created.ejs',{
+              r:'Welcome!'
+       });
       }
  });
 app.use(bodyParser.urlencoded({extended : true}));
@@ -380,7 +397,9 @@ app.post("/orderstatus", function(request, response) {
   });}
       }
     });
-    response.send("updated");
+    response.render('created.ejs',{
+      r:'updated'
+    });
   });
 
 app.post("/generate", function(request, response) {
@@ -479,7 +498,9 @@ app.post('/coupon', function (req, res) {
   .then(console.log('saved'));
      });
   }
-  res.send("done");
+  res.render('created.ejs',{
+    r:'done'
+  });
 });
 
 var nodemailer=require('nodemailer');
