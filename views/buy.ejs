@@ -39,8 +39,17 @@ body {font-family: "Open Sans"}
        <option value="Cod">Cash on delivery</option>
        </select>
        <br>
+       <input type="text" name="email" value="<%=email%>" disabled="disabled">
+       <input type="hidden" name="email" value="<%=email%>">
+
+       <input type="number" name="price" value="<%=price%>" disabled="disabled">
+       <input type="hidden" name="price" value="<%=price%>">
+
+       <input type="number" name="id" value="<%=id%>" disabled="disabled">
+       <input type="hidden" name="id" value="<%=id%>">
+       
        <h4 class="w3-text-white">Give location of delivery:</h4><br>
-       <input type="text" name="address" placeholder="314 London street">
+       <input type="text" name="address">
        <input type="hidden" name="islocker" id="islocker" value="0">
        <input type="hidden" id="latitude" name="latitude">
        <input type="hidden" id="longitude" name="longitude">

@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
-
 const couponCode = require('coupon-code');//generate unique coupon codes
 const Promise = require('bluebird');//bluebird is for promise
-
-//using api voucher-code-generator
 var express=require('express');
+
 var app=express();
 
 app.use('/static',express.static(__dirname + '/public'));
@@ -50,72 +48,27 @@ app.get('/order',function(req,res){
   res.render('order');
 });
 
+
 const port = process.env.PORT || 3003;
 app.listen(port,()=>{
   console.log('server started on port ${port}');
 });
-//var voucher_codes = require('voucher-code-generator');
 
 //connect to database
 const keys=require('./config/keys');
 mongoose.connect(keys.mongoURI);
 
-//create a schema or a blueprint
-//schema of users
-var userSchema=new mongoose.Schema({
-  //id:Number,
-  name:{
-  	first:String,
-  	last:{type:String,trim:true}
-  },
-  email:String,
-  phone:Number,
-  address:String,
-  unattended_deliveries:Number,
-  gender:String,
-
-});
+const {users}=require('./models/user.js');
+const {orders}=require('./models/order.js');
+const {items}=require('./models/item.js');
+const {lockers}=require('./models/locker.js');
+const {coupons}=require('./models/coupon.js');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
-//userSchema.createIndex({id:1},{unique:true});
-var users=mongoose.model('users',userSchema);
-/**
-var item1=users({
-  id:1,
- name:{first:'Darshita',last:'Aggarwal'},
- email:'aggarwaldarshita@gmail.com',
- phone:9643428394,
- address:'H.no 456,sector-10',
- unattended_deliveries:5,
- gender:'female'
-
-}).save(function(err){
-	if(err)
-		throw err;
-	console.log('item1 saved');
-});
 
 
-//schema of lockerrrrrrrrrrs/
-**/
-app.post('/created',function(req,res){
-res.render('created.ejs',{
-r:'Done!!'
-});
-})
-var lockerSchema=new mongoose.Schema({
- locker_id:Number,
- length:Number,
- breadth:Number,
- height:Number,
- address:String,
- latitude:Number,
- longitude:Number
-});
-
-var lockers=mongoose.model('lockers',lockerSchema);
 var NodeGeocoder = require('node-geocoder');
 
 var options = {
@@ -127,24 +80,19 @@ var options = {
 
 var geocoder=NodeGeocoder(options);
 
-
-app.use(bodyParser.urlencoded({extended : true}));
    app.post("/addlocker", function(request, response) {
 
-    var r='Already exists!!';
        console.log(request.body); 
   lockers.findOne({
       locker_id:request.body.locker_id,
     }).then(locker=>{
       if(locker)
       {
-
-      
+      response.render('created.ejs',{
+          r:'Already exists!'
+        });
       }
       else{
-        //create user
-        r='Done!!';
-
         geocoder.geocode(request.body.address)
       .then(function(res) {
        console.log(res);
@@ -167,12 +115,14 @@ app.use(bodyParser.urlencoded({extended : true}));
        .catch(function(err) {
     console.log(err);
       });
+       response.render('created.ejs',{
+          r:'Done!!'
+        });
       }
     });
-     response.render('created.ejs',{
-          r:r
-        });
+     
  });
+//distance between 2 locations
 var rad = function(x) {
   return x * Math.PI / 180;
 };
@@ -207,21 +157,8 @@ geocoder.geocode(req.body.address)
     console.log(err);
       });
 });
-var itemSchema=new mongoose.Schema({
- item_id:Number,
- length:Number,
- breadth:Number,
- height:Number,
- price:Number,
- category:String,
-});
 
-var items=mongoose.model('items',itemSchema);
-
-app.use(bodyParser.urlencoded({extended : true}));
-var r='Already exists!!'
    app.post("/additem", function(request, response) {
-       //console.log(request.body); 
        var newitem={
        item_id:request.body.item_id,
        length:request.body.length,
@@ -235,26 +172,30 @@ var r='Already exists!!'
     }).then(item=>{
       if(item)
       {
-        //return user
-        //console.log('user exists');
-        response.send('item exists');
+         response.render('created.ejs',{
+          r:'Already exists!!'
+        });
       }
       else{
         //create user
        new items(newitem)
         .save()
         .then(console.log('saved'));
-        r='Done!!';
+         response.render('created.ejs',{
+          r:'Done!!'
+        });
       }
     });
-    response.render('created.ejs',{
-      r:r
-    });
  });
+
+
 app.post("/nearby", function(request, response) {
+  console.log(request);
        var m=request.body.islocker;
        var address=request.body.address;
        var delivery=request.body.delivery;
+       var email=request.body.email;
+       console.log(email);
        lockers.findOne(function(err, data) {
         var latitude=data.latitude;
         console.log(latitude);
@@ -266,7 +207,10 @@ app.post("/nearby", function(request, response) {
          lockers.find({}, function(err, data) {
         response.render('nearby.ejs', {
             address : address,
-            items: data
+            items: data,
+            email:request.body.email,
+            id:request.body.id,
+            price:request.body.price
         });
     });
        }
@@ -282,7 +226,84 @@ app.post("/nearby", function(request, response) {
        });
       }
  });
-app.use(bodyParser.urlencoded({extended : true}));
+
+
+app.post("/entercode",function(req,res){
+console.log(req);
+var email=req.body.email;
+var id=req.body.id;
+var price=req.body.price;
+
+ coupons.findOne({
+      user_email:req.body.email
+    }).then(coupon=>{
+      if(coupon)
+      {
+        var type=coupon.type;
+        var code=coupon.code;
+       console.log(type);
+       console.log(code);
+        res.render("entercode",{
+        code:code,
+        type:type,
+        price:price
+         });
+
+      }
+      else{
+       res.render("created.ejs",{
+        r:'No coupon is there!!'
+       });
+      }
+    });
+
+
+});
+
+app.post("/discount",function(req,res){
+console.log(req);
+var ucode=req.body.usercode;
+var code=req.body.code;
+var type=req.body.type;
+var price=req.body.price;
+if(ucode==code)
+{
+  coupons.findOneAndRemove({code: code}, function(err){
+    if(err)
+      console.log("err");
+    console.log("removed");
+  });
+
+  if(type==1)
+    {
+      var p=price/10;
+      price=price-p;
+
+    }
+    if(type==2)
+    {
+      var p=price/5;
+      price=price-p;
+
+    }
+    if(type==3)
+    {
+      var p=price/3.33;
+      price=price-p;
+  
+    }
+    res.render("discount.ejs",{
+    price:price
+    });
+}
+else{
+res.render("created.ejs",{
+  r:'Wrong coupon code!'
+});
+}
+
+});
+
    app.post("/order", function(request, response) {
        console.log(request.body); 
        var newusers={
@@ -298,16 +319,12 @@ app.use(bodyParser.urlencoded({extended : true}));
     }).then(user=>{
       if(user)
       {
-        //return user
-        //console.log('user exists');
-        //response.send('user exists');
+      
       }
       else{
-        //create user
        new users(newusers)
         .save()
         .then(console.log('saved'));
-        //response.send('done');
       }
     });
         items.find({}, function(err, data) {
@@ -321,16 +338,6 @@ app.use(bodyParser.urlencoded({extended : true}));
     });
       });
   
-var orderSchema=new mongoose.Schema({
- order_id:Number,
- email:String,
- status:String
-});
-
-//lockerSchema.index({id:1},{unique:true});
-
-var orders=mongoose.model('orders',orderSchema);
-
 app.post("/buy", function(request, response) {
        console.log(request.body); 
        var r='ordered';
@@ -403,9 +410,8 @@ app.post("/orderstatus", function(request, response) {
   });
 
 app.post("/generate", function(request, response) {
-    //console.log(request.body.threshold);
       var threshold=request.body.threshold;
-      var query = { unattended_deliveries: { $gt: threshold }  };
+      var query = { unattended_deliveries: { $gt: threshold } };
       users.find(query,function(err, result) {
       if (err) throw err;
      console.log(result);
@@ -414,40 +420,8 @@ app.post("/generate", function(request, response) {
      });
   });
   });
-  /** app.post('/buy', function(request, response) {
-    var length=request.body.length;
-    console.log(length);
-     response.render('buy.ejs', {
-            length:request.body.length
-        });
-     
-});**/
-//query on users with unattended deliveries greater than 2
-/**
-users.find().exec(function(err,result){
-	var query1=users.aggregate(
-   [
-     { $sort : { unattended_deliveries : -1 } }
-   ]
-)
-	//query1.where('unattended_deliveries').gt(2);
-	//query1.where('unattended_deliveries').gt(2);//,voucher_codes.generate({
-    //length: 100,
-    //count: 5
-//});;
-	query1.exec(function(err,result){
-       if(!err)
-         	console.log(result);
-         else
-         	console.log('error');
-	});
-});
-**/
 
 //generating unique coupon codes////
-var bodyParser=require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-
 var count = 0;
 // this is code that checks uniqueness and returns a promise
 function check(code) {
@@ -478,12 +452,7 @@ var generateUniqueCode = Promise.method(function() {
     });
 });
 
-var couponSchema=new mongoose.Schema({
- code:String,
- user_email:String
-});
 
-var coupons=mongoose.model('coupons',couponSchema);
 
 app.post('/coupon', function (req, res) {
   console.log('Moved to add page');
@@ -519,12 +488,14 @@ app.post('/created', function (req, res) {
     }).then(coupon=>{
       if(coupon)
       {
+        console.log("already has a code");
       }
     else{
   generateUniqueCode().then(function(code) {
   new coupons({
     code:code,
-    user_email:req.body.email
+    user_email:req.body.email,
+    type:req.body.type
   }).save()
   .then(console.log('saved'));
   console.log("hey");
@@ -546,5 +517,7 @@ app.post('/created', function (req, res) {
      });
         }
       });
-  res.render("created.ejs");
+  res.render("created.ejs",{
+    r:'Done!!'
+  });
 });

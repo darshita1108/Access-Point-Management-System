@@ -21,33 +21,22 @@ body, html {height: 100%}
   background-position: center;
   background-size: cover;
 }
-
+h2{
+  color:white;
+}
 </style>
 
 <body >
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-  <br>
-<div class="container">
-  <div class="card">
-<% for(var i=0;i<result.length;i++){%>
-<form method="post" action="/created">
-    User <%=i+1%>:
-    <input type="text" name="email" value="<%=result[i].email%>" disabled>
-    Choose a type:(from 1 to 3)
-     <input type="number" name="type" required="true">
-    <input type="hidden" name="email" value="<%=result[i].email%>">
-    
-      <button type="submit">Generate Coupon and Send mail</button>
-    
-  <br><br>
-</form>
-<% } %>
+  <div class="w3-display-middle">
+
+   <h2>The price is <%=price%></h2>
 
   </div>
-</body>
-<script type="text/javascript">
+  
+ 
 
-</script>
+</body>
 </html>
 
 </body>

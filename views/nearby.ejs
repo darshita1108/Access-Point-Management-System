@@ -39,17 +39,23 @@ input {
     <h1 style="color: white"><b>LOCKERS</b></h1>
     </div>
   </header>
- 
+
   <div class="w3-row-padding">
-    
+
 <% for(var i=0;i<items.length;i++){%>
-<form method="post" action="/find" >
+<form method="post" action="/entercode">
     <div class="w3-third w3-container w3-margin-bottom">
+       
       <img src="/static/lock.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
       <div class="w3-container w3-white">
+
+       <input type="hidden" name="email" value="<%=email%>">
+       <input type="hidden" name="id" value="<%=id%>" >
+       <input type="hidden" name="price" value="<%=price%>">
+       
     <input type="hidden" name="address"  value="<%=address%>">
       Locker id :<br>
-      <input type="number" name="id" disabled="disabled" value="<%=items[i].locker_id%>"><br>
+      <input type="number" name="lid" disabled="disabled" value="<%=items[i].locker_id%>"><br>
       Address :&nbsp &nbsp<br>
       <input type="string" name="laddress" disabled="disabled" value="<%=items[i].address%>"><br>
       Latitude:&nbsp &nbsp<br>
@@ -59,13 +65,15 @@ input {
       <input type="number" name="longitude" disabled="disabled" value="<%=items[i].longitude%>">
       <input type="hidden" name="longitude"  value="<%=items[i].longitude%>">
       <br>
-      <button type="submit" style="text-align: center;">Find distance</button>
+      <button type="submit"style="text-align: center;" onclick="myfunc()">Use the locker</button>
       </div>
     </div>
-
 </form>
 <% } %>
     </div>
     </div>
     </div>
   </div>
+</body>
+
+</html>
