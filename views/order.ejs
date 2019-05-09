@@ -9,13 +9,14 @@
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 input{
-  background-color: #3CBC8D;
+  background-color: grey;
   color: white;
 }
 
 input {
   size: 4,
-  padding: 12px;
+  padding-left:5px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
@@ -56,6 +57,7 @@ input {
       <input type="number" name="price" disabled="disabled" value="<%=items[i].price%>">
       <input type="hidden" name="price"  value="<%=items[i].price%>">
       <br>
+    
       Length &nbsp:
       <input type="number" name="length" disabled="disabled" value="<%=items[i].length%>">
       <input type="hidden" name="length"  value="<%=items[i].length%>">
@@ -82,7 +84,6 @@ input {
     </div>
     </div>
   </div>
+</body>
+</html>
   
- 
-
-

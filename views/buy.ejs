@@ -33,7 +33,7 @@ body {font-family: "Open Sans"}
        <h4 class="w3-text-white">height :<p id="h"><%=height%></p></h4>
       </h1>
       <h1 class="w3-jumbo w3-text-white w3-hide-small"><b>Delivery Options</b></h1>
-      <form method="post" action="/nearby">
+      <form method="post" action="/show">
        <select name="delivery" id="delivery">
        <option value="locker">Locker</option>
        <option value="Cod">Cash on delivery</option>
@@ -48,11 +48,8 @@ body {font-family: "Open Sans"}
        <input type="hidden" name="id" value="<%=id%>" disabled="disabled">
        <input type="hidden" name="id" value="<%=id%>">
        
-       <h4 class="w3-text-white">Give location of delivery:</h4><br>
-       <input type="text" name="address">
        <input type="hidden" name="islocker" id="islocker" value="0">
-       <input type="hidden" id="latitude" name="latitude">
-       <input type="hidden" id="longitude" name="longitude">
+       
        <br><br>
        <button onclick="myfunc()" style="font-size:20px;width: 100px">Select</button>
      </form>
@@ -63,17 +60,9 @@ body {font-family: "Open Sans"}
   function myfunc()
   {
 
-      var l=document.getElementById("l").textContent;
-      var b=document.getElementById("b").textContent;
-      var h=document.getElementById("h").textContent;
       var x = document.getElementById("delivery").value;
-      var flag=0;
-      if(l<10||b<10||h<10)
-        flag=1;
-    
-      if(flag==1&&x=='locker')
+      if(x=='locker')
       {
-        alert("item is not fit for locker");
         document.getElementById("islocker").value='1';
       }
     

@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+<title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+input{
+  background-color: grey;
+  color: white;
+}
+
+input {
+  size: 4,
+  padding-left:5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 10px;
+}
+</style>
+<body  style="max-width:1600px;background-color:black">
+
+<!-- Sidebar/menu -->
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<div class="w3-main" >
+
+  <!-- Header -->
+  <header id="portfolio">
+    <div class="w3-container">
+    <h1 style="color: white"><b></b></h1>
+    </div>
+  </header>
+ 
+  <div class="w3-row-padding">
+    
+<% for(var i=0;i<arr.length;i++){%>
+<form method="post" action="/entercode" >
+
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="/static/lock.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+
+     <br>
+     <input type="hidden" name="email"  value="<%=email%>">
+     <input type="hidden" name="price"  value="<%=price%>">
+       Name :<br>
+      <input type="text"  disabled="disabled" value="<%=arr[i].name%>">
+      <input type="hidden"   value="<%=arr[i].name%>">
+      <br>
+      Address:<br>
+      <input type="text" name="length" disabled="disabled" value="<%=arr[i].address%>">
+      <input type="hidden" name="length"  value="<%=arr[i].address%>">
+      <br>
+      Lockers:<br>
+      <input type="number" name="breadth" disabled="disabled" value="<%=arr[i].lock%>">
+      <input type="hidden" name="breadth" value="<%=arr[i].lock%>">
+      <br>
+      Length:<br>
+      <input type="number" name="height" disabled="disabled" value=
+      "<%=arr[i].length%>"'>
+      <input type="hidden" name="height"  value="<%=arr[i].length%>">
+      <br>
+       Breadth:<br>
+      <input type="number" name="height" disabled="disabled" value=
+      "<%=arr[i].breadth%>"'>
+      <input type="hidden" name="height"  value="<%=arr[i].breadth%>">
+      <br>
+       Height:<br>
+      <input type="number" name="height" disabled="disabled" value=
+      "<%=arr[i].height%>"'>
+      <input type="hidden" name="height"  value="<%=arr[i].height%>">
+      <br>
+      Weight:<br>
+      <input type="number" name="height" disabled="disabled" value="<%=arr[i].weight%>">
+      <input type="hidden" name="height"  value="<%=arr[i].weight%>">
+      <br>
+      Rate:<br> 
+      <input type="number" name="category" disabled="disabled" value="<%=arr[i].rate%>">
+      <input type="hidden" name="category"  value="<%=arr[i].rate%>">
+      <br><br>
+      <button type="submit">USE THE LOCKER</button>
+      </div>
+    </div>
+
+</form>
+<% } %>
+    </div>
+    </div>
+    </div>
+  </div>
+  
+ 
+
+

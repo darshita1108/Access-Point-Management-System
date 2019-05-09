@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+ button{
+  margin:auto;
+  display:block;
+ }
+
+/* BUTTON STYLES */
+ button{
+  padding:16px 32px;
+  font-family:helvetica;
+  font-size:16px;
+  font-weight:100;
+  color:#fff;
+  background: #587286;
+  border:0;
+  font-weight:100;
+ }
+ button:hover{
+   background: #3B5C76;
+ }
+ body{
+ 	background-color:black;
+ }
+ h2,h1{
+ 	color:#fff;
+ }
+ img {
+  display: block;
+  margin: 0 auto;
+  width:35%;
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+<br>
+<h1 align='center' > Welcome <%=email%> to Access Point Management Service</h1>
+<br>
+<a href="https://www.amazon.com/primeinsider/tips/amazon-locker-qa.html"> <img src="/static/smile.jpg" alt="smile" title="AMAZON Lockers Search"> </a>
+<br><br><br>
+<h3 align='center' style='color:white;'> Please fill your address below to get a list of access points around you </h3>
+<br>
+<form method='post' action="/search">
+  <!-- inputs for address-->
+  <font align='center' style='color:white; margin:50px '> Enter the address to find nearest Access Points- </font><br>
+<!--input type='text' id='b1' name='fName' placeholder="Enter your address" style='right-margin:50px; width=350px; hieght=100px'-->
+<br>
+<input type="hidden" name="email" value="<%=email%>">
+<input type="hidden" name="price" value="<%=price%>">
+<input type="text" name="A1" placeholder="street no.">
+  <input type="text" name="A2" placeholder="city">
+  <input type="text" name="A3" placeholder="state">
+  <input type="text" name="A4" placeholder="Country">
+  <br><br>
+\
+<br>
+<!-- inputs for Range-->
+<font align='center' style='color:white; margin:50px '> Please fill the range upto which you want to see nearest access points (in kilometers) </font>
+<br><br>
+<input type='text' id='b2' name='range' style='right-margin:50px; width=350px; hieght=100px'><br>
+<br>
+<!-- inputs for mode-->
+<font align='center' style='color:white; margin:50px '> Mode of Access Point - <br>
+<input type='radio' id='r1' name='Mode' value='Online' > Online <br>
+    <input type='radio' id='r2' name='Mode' value='Offline' > Offline
+    <br><br></font>
+    <!-- inputs for type-->
+<font align='center' style='color:white; margin:50px '> Type of Access Point -<br>
+<input type='radio' id='r3' name='Type' value='Residential' > Residential <br>
+    <input type='radio' id='r4' name='Type' value='Corporate' > Corporate
+    <br><br></font>
+    <!-- inputs for Suitable separations-->
+<font align='center' style='color:white; margin:50px '> Partition of results on basis of -<br>
+<input type='radio' id='r5' name='Partition' value='None' > None (All results displayed) <br>
+    <input type='radio' id='r6' name='Partition' value='Country' > Country wise <br>
+    <input type="radio" id="r7" name="Partition" value="State"> State wise 
+    <br><br></font>
+<button type='submit' id='a1' align= 'center' name='find' formaction='/search'> Get the results </button>
+</form>
+<br><br><br><br><br>
+
+</body>
+</html>
+
+

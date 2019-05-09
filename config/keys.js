@@ -1,5 +1,5 @@
 module.exports={
 	mongoURI:'mongodb://user123:user123@ds217125.mlab.com:17125/acms',
-	key:'AIzaSyA1KGt0fNR5NDB_Jl4mdKmkb1Imf5Jzn4c',
+	key:'54383ddcc3734cab8ce0e83f911be831',
 	password:'daaru@1108'
 }

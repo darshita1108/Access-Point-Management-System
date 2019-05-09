@@ -29,6 +29,7 @@ body, html {height: 100%}
 
     <form method="post" action="/discount">
      Enter the coupon code:<br>
+     <input type="hidden" name="email" value="<%=email%>">
        <input type="text" id="ccode" name="usercode" required="true">
        <input type="hidden" id="code" name="code" value="<%=code%>">
        <input type="hidden" id="type" name="type" value="<%=type%>">

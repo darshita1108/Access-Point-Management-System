@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE>Adding geocode of another Access Point to the database</TITLE>
+<!--JavaScript part of code-->
+<script>
+    function myFunction()
+    {
+      if(document.getElementById('r1').checked)
+      {
+        //alert("Please give all the details required for this Access Point");
+        document.getElementById('F1').style.display='block';//form for access point visible
+        document.getElementById('F2').style.display='none';//form for locker not visible
+        document.getElementById('c2').style.display='none';//img for locker not visible
+        document.getElementById('c1').style.display='block';//img for access point visible
+        
+      }
+      else if(document.getElementById('r2').checked)
+      {
+        //alert("Please give all the details required for this slot of an Access Point");
+        document.getElementById('F2').style.display='block';//form for locker visible
+        document.getElementById('F1').style.display='none';//form for access point not visible
+        document.getElementById('c2').style.display='block';//img for locker visible
+        document.getElementById('c1').style.display='none';//img for access point not visible
+        
+      }
+      else
+      {
+        alert("Please choose an option first");
+      }
+    }
+</script>
+<style>
+
+img {
+  display: block;
+  margin: 0 auto;
+  width:35%;
+  opacity: 0.5;
+}
+</style>
+</HEAD>
+<BODY bgcolor='black'>
+  <h1 align='center' style='color:white;'> Welcome! </h1>
+  <h2 align='center' style='color:white;'> Please fill the details below to add an access point to the location </h2>
+<a href="https://www.amazon.com/primeinsider/tips/amazon-locker-qa.html"> <img id='c2' src="/static/smile.jpg" alt="Locker" title="AMAZON LOCKERS" /> </a>
+<br><br>
+  <!-- for access points -->
+
+  <form style='color:white ' action='/accessList' method='post'>
+  <!--This is the form starting where info for every acess point will be saved-->
+  <fieldset  style=' padding:50px margin:50px '>
+    <legend style='font-size:30px ' align='center'>Adding to Database:</legend>
+    <br><br>
+    <font-size='25px' >Please choose one option to recieve the further form and add information to the database : </font>
+    <br>
+    <input type='radio' id='r1' name='adding' value='1' > Access Point (A whole new space for this facility) <br>
+    <input type='radio' id='r2' name='adding' value='2' > Locker (one slot to an Access Point)
+    <br><br>
+    <button type='button' id='r3' onClick='myFunction()'> NEXT  </button>
+  </fieldset>
+  <!--For Access Point Database-->
+  <fieldset id='F1' style=' display:none'>
+  <legend style='font-size:30px ' align='center'>Adding to Access Point Database:</legend>
+  <br><br>
+  Geocode Details:
+  <br><br>
+  <!--We want to save a unique Access Point every time-->
+  Add details of a new access point to be added to db else no change will be made to db
+  <br><br>
+  <!--We want proper address of access point-->
+  Address of the Access Point-
+  <br>
+  <!--input type='text' id='b1' name='Aname'-->
+  <input type="text" name="A1" placeholder="street no.">
+  <input type="text" name="A2" placeholder="city">
+  <input type="text" name="A3" placeholder="state">
+  <input type="text" name="A4" placeholder="Country">
+  <br><br>
+  <!--For Number of lockers-->
+  No. of lockers-<br>
+  <input type='Number' id='b3' name='Nname'>
+  <br>
+  <br>
+  <!--For mode of Access Point offlinr / online-->
+  Mode of Access Point - <br>
+  <input type='text' id='b4' name='Amode' placeholder="Online/Offline-">
+  <br>
+  <br>
+  <!--For name of Access Point-->
+  Name of Access Point - <br>
+  <input type='text' id='b5' name='Atitle' placeholder="Title of Access Point">
+  <br>
+  <br>
+  <!--For dimensions of Access Point-->
+  Length of Access Point - <br>
+  <input type='number' id='b6' name='length' placeholder="L">
+  <br>
+  <br>
+  Breadth of Access Point - <br>
+  <input type='number' id='b6' name='breadth' placeholder="L">
+  <br>
+  <br>
+  Height of Access Poin t - <br>
+  <input type='number' id='b6' name='height' placeholder="L">
+  <br>
+  <br>
+  <!--For weight limit of Access Point-->
+  Weight Limit of Access Point - <br>
+  <input type='Number' id='b7' name='Awt' placeholder="in Kilograms-">
+  <br>
+  <br>
+  <!--For price of Access Point-->
+  Rate of Access Point - <br>
+  <input type='Number' id='b8' name='Arate' placeholder="Rupees per 12 hours-">
+  <br>
+  <br>
+  <!--For type of place(Residential/corporate) of Access Point-->
+  Type of address of Access Point - <br>
+  <input type='text' id='b9' name='Atype' placeholder="Residential/corporate-">
+  <br>
+  <button align='center' name='point' type='submit' id='r4' formaction='/accessList' style='padding:10px; margin:20px; ' > Submit  </button>
+
+<br><br><br>
+<a href="https:https://www.amazon.com/primeinsider/tips/amazon-locker-qa.html"> <img id='c1' src="/static/addAccessPoint.jpg" alt="Access Point" title="AMAZON LOCKERS" /> </a>
+  </fieldset>
+  </form>
+
+  <!-- for lockers -->
+
+
+  <form style='color:white ' action='/lockerList' method='post'>
+  <!--For Lockers Database-->
+  <fieldset id='F2' style=' display:none'>
+  <legend style='font-size:30px ' align='center'>Adding to Lockers Database:</legend>
+  <br><br>
+  Geocode Details: <br><br>
+  Add details of an existing access point to update the number of lockers in db else no change will be made to db
+  <br><br>
+  Address of the Access Point [street no., city, state, Country ] use proper punctuations in the address-
+  <br>
+  <!-- input for address -->
+  <!--input type='text' id='b2' name='Lname' placeholder='Address'-->
+  <input type="text" name="A1" placeholder="street no.">
+  <input type="text" name="A2" placeholder="city">
+  <input type="text" name="A3" placeholder="state">
+  <input type="text" name="A4" placeholder="Country">
+  <br><br>
+  Number of lockers added-<br>
+  <input type='number' id='b3' name='Nname1' placeholder="No. of extra lockers">
+  <br><br>
+  <button align='center' name='loc' type='submit' id='r5' formaction='/lockerList' style='padding:10px; margin:20px; ' > Submit  </button>
+<br><br><br>
+
+  </fieldset> 
+  </form>
+</BODY>
+</HTML>
