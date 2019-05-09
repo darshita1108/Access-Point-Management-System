@@ -2,6 +2,11 @@
 <HTML>
 <HEAD>
 <TITLE>Adding geocode of another Access Point to the database</TITLE>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!--JavaScript part of code-->
 <script>
     function myFunction()
@@ -35,7 +40,7 @@
 img {
   display: block;
   margin: 0 auto;
-  width:35%;
+  width:45%;
   opacity: 0.5;
 }
 </style>
@@ -46,7 +51,7 @@ img {
 <a href="https://www.amazon.com/primeinsider/tips/amazon-locker-qa.html"> <img id='c2' src="/static/smile.jpg" alt="Locker" title="AMAZON LOCKERS" /> </a>
 <br><br>
   <!-- for access points -->
-
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
   <form style='color:white ' action='/accessList' method='post'>
   <!--This is the form starting where info for every acess point will be saved-->
   <fieldset  style=' padding:50px margin:50px '>
@@ -122,13 +127,12 @@ img {
   <button align='center' name='point' type='submit' id='r4' formaction='/accessList' style='padding:10px; margin:20px; ' > Submit  </button>
 
 <br><br><br>
-<a href="https:https://www.amazon.com/primeinsider/tips/amazon-locker-qa.html"> <img id='c1' src="/static/addAccessPoint.jpg" alt="Access Point" title="AMAZON LOCKERS" /> </a>
   </fieldset>
   </form>
-
+</div>
   <!-- for lockers -->
 
-
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
   <form style='color:white ' action='/lockerList' method='post'>
   <!--For Lockers Database-->
   <fieldset id='F2' style=' display:none'>
@@ -154,5 +158,6 @@ img {
 
   </fieldset> 
   </form>
+</div>
 </BODY>
 </HTML>
