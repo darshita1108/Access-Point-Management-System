@@ -556,17 +556,17 @@ var price=req.body.price;
     }).then(coupon=>{
       if(coupon)
       {
-        var type=coupon.type;
+        var discount=coupon.discount;
         var code=coupon.code;
-       console.log(type);
-       console.log(code);
-       console.log(price);
-       console.log(email);
+        var expiry=coupon.expiry_date;
+        var used=coupon.used;
         res.render("entercode",{
         code:code,
-        type:type,
+        discount:discount,
         price:price,
-        email:email
+        email:email,
+        expiry:expiry,
+        used:used
          });
 
       }
@@ -584,44 +584,39 @@ app.post("/discount",function(req,res){
 console.log(req);
 var ucode=req.body.usercode;
 var code=req.body.code;
-var type=req.body.type;
 var price=req.body.price;
-if(ucode==code)
+var expiry=req.body.expiry;
+var discount=req.body.discount;
+var used=req.body.used;
+var email=req.body,email;
+var date=new Date();
+expiry=new Date(expiry);
+var flag=0;
+if(expiry>date&&used==false)
 {
-  coupons.findOneAndRemove({code: code}, function(err){
-    if(err)
-      console.log("err");
-    console.log("removed");
-  });
+  console.log("gr");
+  flag=1;
+  var d=(discount*price)/100;
+  price=price-d;
 
-  if(type==1)
-    {
-      var p=price/10;
-      price=price-p;
-
-    }
-    if(type==2)
-    {
-      var p=price/5;
-      price=price-p;
-
-    }
-    if(type==3)
-    {
-      var p=price/3.33;
-      price=price-p;
-  
-    }
-    res.render("discount.ejs",{
-    price:price
-    });
 }
 else{
-res.render("created.ejs",{
-  r:'Wrong coupon code!'
-});
+   res.render("created.ejs",{
+    r:'coupon expired'
+  });
+  }
+if(flag==1&&ucode==code&&used==false)
+{
+  var myquery = { used: false };
+  var newvalues = { $set: {used: true } };
+   coupons.updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
+  });
+   res.render("created.ejs",{
+     r:'price is '+price
+   });
 }
-
 });
 
    app.post("/order", function(request, response) {
@@ -747,16 +742,21 @@ var count = 0;
 function check(code) {
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      count++;
-      // first resolve with false, on second try resolve with true
-      if (count === 1) {
+    console.log("check"+code);
+    coupons.findOne({
+      code:code
+    }).then(coupon=>{
+      if (coupon) {
         console.log(code + ' is not unique');
         resolve(false);
-      } else {
+      } 
+      else {
         console.log(code + ' is unique');
         resolve(true);
       }
     }, 1000);
+    });
+
   });
 }
 
@@ -812,10 +812,13 @@ app.post('/created', function (req, res) {
       }
     else{
   generateUniqueCode().then(function(code) {
+    console.log("code is");
+    console.log(code);
   new coupons({
     code:code,
     user_email:req.body.email,
-    type:req.body.type
+    discount:req.body.discount,
+    expiry_date:req.body.expiry,
   }).save()
   .then(console.log('saved'));
   console.log("hey");
